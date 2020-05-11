@@ -3,8 +3,7 @@
 int main()
 {
 	Matrix* m = createIdentity(10); 
-	Matrix* q = createIdentity(10);
-	Matrix* r = *m + *q;
+	Matrix* r = *m * (float)10;
 	r->printMatrix();	
 	return 0;
 }

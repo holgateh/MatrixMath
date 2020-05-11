@@ -16,6 +16,12 @@ class Matrix
 
 		// Operator overloads:
 		friend Matrix* operator+ (const Matrix& m1, const Matrix& m2);
+		friend Matrix* operator* (const Matrix& m1, const Matrix& m2);
+		friend Matrix* operator* (const float& s, const Matrix& m);
+		friend Matrix* operator* (const Matrix& m, const float& s);
 };
 
 Matrix* operator+ (const Matrix& m1, const Matrix& m2);
+Matrix* operator* (const Matrix& m1, const Matrix& m2);
+Matrix* operator* (const float& s, const Matrix& m);
+Matrix* operator* (const Matrix& m, const float& s);
