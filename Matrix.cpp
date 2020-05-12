@@ -66,10 +66,10 @@ Matrix* operator+ (const Matrix& m1, const Matrix& m2)
 
 Matrix* operator* (const Matrix& m1, const Matrix& m2)
 {
-	// Matrices that are to be added must have equal dimension;
+	// The first matrix must have a witdh equal to the height of the second matrix in order for valid multiplication.
 	if(m1.width != m2.height)
 	{
-		std::cout << "Error: * operator failed due matrices being of different dimension.\n";
+		std::cout << "Error: * operator failed due to first matrix having a width not equal to the height of the second matrix.\n";
 		return nullptr;
 	}
 	Matrix* result = new Matrix(m1.height, m2.width);
