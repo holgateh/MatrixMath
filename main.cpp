@@ -5,6 +5,7 @@
 
 int main()
 {
+	srand(time(NULL));
 	Matrix* m = new Matrix(3,3);	
 	m->printMatrix();	
 	for(int i = 1; i <= 9; i++)
