@@ -1,7 +1,8 @@
 #include <iostream>
+#include "stdlib.h"
 #include "Matrix.h"
 #include "MatrixHelper.h"
-#include "stdlib.h"
+
 
 int main()
 {
