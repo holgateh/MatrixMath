@@ -3,14 +3,16 @@
 class Polynomial
 {
     private:
-        std::vector<float> coeff; 
+	float order;
+	std::vector<float> coeff;
     public:
         Polynomial(std::vector<float> coeff);
-
     private:
 
     public:
-        void reduce(float root);
         void printPolynomial();
+	float getOrder();
+	float getCoefficient(int exponent);
+	float evaluateAt(float x);
         
-}
+};

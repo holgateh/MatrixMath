@@ -2,18 +2,18 @@
 #include "stdlib.h"
 #include "Matrix.h"
 #include "MatrixHelper.h"
-
-
+#include "Polynomial.h"
+#include "PolynomialHelper.h"
+#include <vector>
 int main()
 {
-	srand(time(NULL));
-	Matrix* m = new Matrix(3,3);	
-	m->printMatrix();	
-	for(int i = 1; i <= 9; i++)
+	Polynomial p = Polynomial({-24, 26, -9, 1});
+	p.printPolynomial();
+	std::vector<float> roots = getRoots(p);	
+	for(int i = 0; i < roots.size(); i++)
 	{
-		m->setEntry((i - ((i-1) % 3 + 1)) / 3 + 1, (i-1) % 3 + 1, rand() % 30); 
+		std::cout << roots.at(i) << " ";
 	}
-	m->printMatrix();
-	std::cout << "The determinant of m is " << m->det() << "\n";
+	std::cout << std::endl;	
 	return 0;
 }

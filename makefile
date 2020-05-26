@@ -1,6 +1,6 @@
+all:
+	g++ *.cpp && ./a.out 
 run: 
-	cmd /K a.exe
+	./a.out
 compile: 
 	g++ *.cpp
-all:
-	g++ *.cpp && cmd /K a.exe
