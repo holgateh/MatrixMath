@@ -8,26 +8,13 @@ Polynomial::Polynomial(const std::vector<float> coeff)
 	this->order = coeff.size() - 1;
 }
 
-void Polynomial::printPolynomial()
-{
-	for(int i = 0; i <= this->order; i++)
-	{
-		std::cout << coeff.at(i) << "X^" << i;
-		if(i != order)
-		{
-			std::cout << " + ";
-		}
-	}
-	std::cout << std::endl;
 
-}
-
-float Polynomial::getOrder()
+float Polynomial::getOrder() const
 {
 	return this->order;
 }
 
-float Polynomial::getCoefficient(int exponent)
+float Polynomial::getCoefficient(int exponent) const
 {
 	if(exponent < 0 || exponent > this->order)
 	{
@@ -41,7 +28,7 @@ float Polynomial::getCoefficient(int exponent)
 }
 
 
-float Polynomial::evaluateAt(float x)
+float Polynomial::evaluateAt(float x) const
 {
 	float result = 0;
 	for(int i = 0; i <= this->order; i++)
@@ -51,3 +38,73 @@ float Polynomial::evaluateAt(float x)
 	return result;	
 }
 
+void Polynomial::printPolynomial() const
+{
+	for(int i = 0; i <= this->order; i++)
+	{
+		std::cout << coeff.at(i) << "X^" << i;
+		if(i != order)
+		{
+			std::cout << " + ";
+		}
+	}
+	std::cout << std::endl;
+
+}
+
+Polynomial operator+ (const Polynomial& p1, const Polynomial& p2)
+{
+	std::vector<float> newCoeff;
+	if(p1.getOrder() >= p2.getOrder())
+	{
+		for(int i = 0; i <= p1.getOrder(); i++)
+		{
+			if(i <= p2.getOrder())
+			{
+				newCoeff.push_back(p1.getCoefficient(i) + p2.getCoefficient(i));
+			}
+			else
+			{
+				newCoeff.push_back(p1.getCoefficient(i));
+			}
+		}
+	}
+	else
+	{
+		for(int i = 0; i <= p2.getOrder(); i++)
+		{
+			if(i <= p1.getOrder())
+			{
+				newCoeff.push_back(p2.getCoefficient(i) + p1.getCoefficient(i));
+			}
+			else
+			{
+				newCoeff.push_back(p2.getCoefficient(i));
+			}
+		}
+	}
+	return Polynomial(newCoeff);
+}
+
+Polynomial operator* (const Polynomial& p1, const Polynomial& p2)
+{
+	std::vector<float> newCoeff;
+	for(int i = 0; i <= p1.getOrder() + p2.getOrder(); i++)
+	{
+		int coeff = 0;
+		for(int j = 0; j <= i; j++)
+		{
+			if(j <= p1.getOrder() && i - j <= p2.getOrder())
+			{
+				coeff += p1.getCoefficient(j) * p2.getCoefficient(i-j);
+			}
+		}
+		newCoeff.push_back(coeff);
+	}
+	return Polynomial(newCoeff);
+}
+
+Polynomial operator- (const Polynomial& p1, const Polynomial& p2)
+{
+	return p1 + (Polynomial({-1}) * p2); 
+}

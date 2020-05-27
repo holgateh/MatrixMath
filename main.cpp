@@ -7,13 +7,11 @@
 #include <vector>
 int main()
 {
-	Polynomial p = Polynomial({-24, 26, -9, 1});
+	Polynomial q = Polynomial({1, 1});
+	Polynomial p = Polynomial({1, 1});
 	p.printPolynomial();
-	std::vector<float> roots = getRoots(p);	
-	for(int i = 0; i < roots.size(); i++)
-	{
-		std::cout << roots.at(i) << " ";
-	}
-	std::cout << std::endl;	
+	q.printPolynomial();
+	Polynomial r = p * q;
+	r.printPolynomial();
 	return 0;
 }
