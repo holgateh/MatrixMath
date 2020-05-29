@@ -3,17 +3,18 @@
 class Polynomial
 {
     private:
-		float order;
-		std::vector<float> coeff;
+		double order;
+		std::vector<double> coeff;
     public:
-		Polynomial(std::vector<float> coeff);
+		Polynomial(std::vector<double> coeff);
     private:
 
     public:
-		float getOrder() const;
-		float getCoefficient(int exponent) const;
-		float evaluateAt(float x) const;
+		double getOrder() const;
+		double getCoefficient(int exponent) const;
+		double evaluateAt(double x) const;
 		void printPolynomial() const;
+		double toFloat() const;
 		// Operator overloads:
 		friend Polynomial operator+ (const Polynomial& p1, const Polynomial& p2);
 		friend Polynomial operator- (const Polynomial& p1, const Polynomial& p2);

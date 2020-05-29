@@ -1,19 +1,18 @@
 #include "Polynomial.h"
 #include <iostream>
 #include <math.h>
-#include <cfloat>
-
-int sign(float x)
+#include <float.h>
+int sign(double x)
 {
 	return x / abs(x);
 }
 
-float bisect(Polynomial p, float a, float b)
+double bisect(Polynomial p, double a, double b)
 {
 	int N = 1;
 	const int maxN = 10000;
-	const float tol = 0.00005f;
-	float c;
+	const double tol = 0.0000000001f;
+	double c;
 	while(N <= maxN)
 	{	
 		c = (a + b) / 2.0f;	
@@ -34,11 +33,12 @@ float bisect(Polynomial p, float a, float b)
 			b = c;
 		}
 
+		std::cout << N << std::endl;
 	}
 
 	if(N == maxN)
 	{
-		return FLT_MAX;
+		return DBL_MAX;
 	}
 	else
 	{
@@ -47,12 +47,12 @@ float bisect(Polynomial p, float a, float b)
 }
 
 
-Polynomial reduce(Polynomial p, float root)
+Polynomial reduce(Polynomial p, double root)
 {
-	std::vector<float> newCoeff;
+	std::vector<double> newCoeff;
 	for(int i = p.getOrder() - 1; i >= 0; i--)
 	{
-		float coeff;
+		double coeff;
 		if(i == p.getOrder() - 1)
 		{
 			coeff = p.getCoefficient(i + 1);
@@ -68,7 +68,7 @@ Polynomial reduce(Polynomial p, float root)
 
 Polynomial makeMonic(Polynomial p)
 {
-	std::vector<float> newCoeff;
+	std::vector<double> newCoeff;
 	for(int i = 0; i <= p.getOrder(); i++)
 	{
 		newCoeff.push_back(p.getCoefficient(i)/p.getCoefficient(p.getOrder()));
@@ -77,20 +77,25 @@ Polynomial makeMonic(Polynomial p)
 	return result;
 }
 
-std::vector<float> getRoots(Polynomial p)
+std::vector<double> getRoots(Polynomial p)
 {
-	std::vector<float> roots;
+	std::vector<double> roots;
 	Polynomial tempPoly = p;	
+	double tol = 0.001f;
 	while(tempPoly.getOrder() >= 2)
 	{
 	
 		if(tempPoly.getOrder() > 2)
 		{
 			tempPoly = makeMonic(tempPoly);
-			float root = bisect(tempPoly, -abs(tempPoly.getCoefficient(0)) - 1, abs(tempPoly.getCoefficient(0)) + 1);
+			double root = bisect(tempPoly, -abs(tempPoly.getCoefficient(0)) - 1, abs(tempPoly.getCoefficient(0)) + 1);
 
-			if(root != FLT_MAX)
+			if(root != DBL_MAX)
 			{	
+				if(abs(root - round(root)) < tol)
+				{
+					root = round(root);
+				}
 				roots.push_back(root);
 				tempPoly = reduce(tempPoly, root);
 				tempPoly.printPolynomial();
@@ -103,18 +108,18 @@ std::vector<float> getRoots(Polynomial p)
 		}
 		else if(tempPoly.getOrder() == 2)
 		{
-			float a = tempPoly.getCoefficient(2);
-			float b = tempPoly.getCoefficient(1);
-			float c = tempPoly.getCoefficient(0);
+			double a = tempPoly.getCoefficient(2);
+			double b = tempPoly.getCoefficient(1);
+			double c = tempPoly.getCoefficient(0);
 
-			if(b*b - 4*a*c < 0)
+			if(b*b - 4*a*c < -tol)
 			{
 				std::cout << "No real roots found.";
 				break;
 			}
 			else
 			{
-				float root1, root2;
+				double root1, root2;
 				root1 = (-b + sqrt(b*b - 4.0f * a * c)) / (2.0f * a);
 				root2 = (-b - sqrt(b*b - 4.0f * a * c)) / (2.0f * a);
 				roots.push_back(root1);

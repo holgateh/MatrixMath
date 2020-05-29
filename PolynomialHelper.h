@@ -1,8 +1,8 @@
 #pragma once
 #include <vector>
 #include "Polynomial.h"
-int sign(float x);
-float bisect(Polynomial p, float a, float b);
-Polynomial reduce(Polynomial p, float root);
+int sign(double x);
+double bisect(Polynomial p, double a, double b);
+Polynomial reduce(Polynomial p, double root);
 Polynomial makeMonic(Polynomial p);
-std::vector<float> getRoots(Polynomial p);
+std::vector<double> getRoots(Polynomial p);

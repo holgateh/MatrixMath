@@ -2,19 +2,19 @@
 #include <math.h>
 #include <iostream>
 
-Polynomial::Polynomial(const std::vector<float> coeff)
+Polynomial::Polynomial(const std::vector<double> coeff)
 {
 	this->coeff = coeff;
-	this->order = coeff.size() - 1;
+	this->order = this->coeff.size() - 1;
 }
 
 
-float Polynomial::getOrder() const
+double Polynomial::getOrder() const
 {
 	return this->order;
 }
 
-float Polynomial::getCoefficient(int exponent) const
+double Polynomial::getCoefficient(int exponent) const
 {
 	if(exponent < 0 || exponent > this->order)
 	{
@@ -23,17 +23,17 @@ float Polynomial::getCoefficient(int exponent) const
 	}
 	else
 	{
-		return coeff.at(exponent);
+		return this->coeff.at(exponent);
 	}
 }
 
 
-float Polynomial::evaluateAt(float x) const
+double Polynomial::evaluateAt(double x) const
 {
-	float result = 0;
+	double result = 0;
 	for(int i = 0; i <= this->order; i++)
 	{
-		result += coeff.at(i) * pow(x, i);
+		result += this->coeff.at(i) * pow(x, i);
 	}
 	return result;	
 }
@@ -42,7 +42,7 @@ void Polynomial::printPolynomial() const
 {
 	for(int i = 0; i <= this->order; i++)
 	{
-		std::cout << coeff.at(i) << "X^" << i;
+		std::cout << this->coeff.at(i) << "X^" << i;
 		if(i != order)
 		{
 			std::cout << " + ";
@@ -51,10 +51,18 @@ void Polynomial::printPolynomial() const
 	std::cout << std::endl;
 
 }
+double Polynomial::toFloat() const
+{
+	if(this->order > 0)
+	{
+		std::cout << "Polynomial contains terms of order > 0. Converting to double will discard these terms.\n";
+	}
+	return this->coeff.at(0);	
+}
 
 Polynomial operator+ (const Polynomial& p1, const Polynomial& p2)
 {
-	std::vector<float> newCoeff;
+	std::vector<double> newCoeff;
 	if(p1.getOrder() >= p2.getOrder())
 	{
 		for(int i = 0; i <= p1.getOrder(); i++)
@@ -88,7 +96,7 @@ Polynomial operator+ (const Polynomial& p1, const Polynomial& p2)
 
 Polynomial operator* (const Polynomial& p1, const Polynomial& p2)
 {
-	std::vector<float> newCoeff;
+	std::vector<double> newCoeff;
 	for(int i = 0; i <= p1.getOrder() + p2.getOrder(); i++)
 	{
 		int coeff = 0;

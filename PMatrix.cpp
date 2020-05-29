@@ -1,20 +1,21 @@
-#include "Matrix.h"
+#include "PMatrix.h"
 #include <iostream>
 #include <string.h>
 #include <math.h>
 //Set the width and height of the matrix and allocate memory to store the matrix's data.
-Matrix::Matrix(int _height, int _width) : height(_height), width(_width) 
+PMatrix::PMatrix(int _height, int _width) : height(_height), width(_width) 
 {
+	//Fill the matrix with the zero polynomial.
 	for(int i = 0; i < _height; i++)
 	{
 		for(int j = 0; j < _width; j++)
 		{
-			data.push_back(0);
+			data.push_back(Polynomial({0}));	
 		}
 	}
-}	
+}
 
-void Matrix::setEntry(int i, int j, double value)
+void PMatrix::setEntry(int i, int j, Polynomial value)
 {
 	if(i < 1 || j < 1 || i > height || j > width)
 	{
@@ -24,14 +25,14 @@ void Matrix::setEntry(int i, int j, double value)
 	this->data[(i-1)*this->width + (j-1)] = value;
 }
 
-double Matrix::getEntry(int i, int j) const
+Polynomial PMatrix::getEntry(int i, int j) const
 {
 	return data[(i-1)*this->width + (j-1)];
 }
 
-Matrix Matrix::getSubmatrix(int i, int j)
+PMatrix PMatrix::getSubmatrix(int i, int j)
 {
-	Matrix result =  Matrix(this->width - 1, this->height - 1);
+	PMatrix result = PMatrix(this->width - 1, this->height - 1);
 	//Keeping track of the index that we are writing to in the resultant submatrix.	
 	int workingIndexX = 1;
 	int workingIndexY = 1;
@@ -55,28 +56,28 @@ Matrix Matrix::getSubmatrix(int i, int j)
 	return result;
 }
 
-double Matrix::det()
+Polynomial PMatrix::det()
 {
 	//Return if the matrix is not square.
 	if(this->width != this->height)
 	{
 		std::cout << "Determinants of non-square matrices cannot be calculated. -1 will be returned.\n";
-		return -1;
+		return Polynomial({-1});
 	}
 	//Return the only entry if the matrix is 1x1.	
 	if(this->height == 1)
 	{
-		return this->getEntry(1,1);
+		this->getEntry(1,1);
 	}
 
 	//Recursivly call the algorithm until the 2x2 case is reached.
 	if(this->height > 2)
 	{
-		double sum = 0;
+		Polynomial sum({0}); 
 		for(int i = 1; i <= this->height; i++)
 		{
-			Matrix subMatrix = this->getSubmatrix(i,1);
-			sum += pow(-1, i+1) * this->getEntry(i, 1) * subMatrix.det();
+			PMatrix subPMatrix = this->getSubmatrix(i,1);
+			sum = sum + Polynomial({(double)pow(-1, i+1)}) * this->getEntry(i, 1) * subPMatrix.det();
 		}
 		return sum;	
 	}
@@ -88,27 +89,27 @@ double Matrix::det()
 	
 }
 
-void Matrix::printMatrix()
+void PMatrix::printPMatrix()
 {
-	for(int i = 0; i < this->height; i++)
+	for(int i = 1; i <= this->height; i++)
 	{
-		for(int j = 0; j < this->width; j++)
+		for(int j = 1; j <= this->width; j++)
 		{
-			std::cout << std::to_string(data[i*this->width + j]).substr(0, 4) << " ";	
+			std::cout << "(" << i << ", " << j << "): ";
+			this->getEntry(i,j).printPolynomial();
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
 	}	
 }
-
-Matrix operator+ (const Matrix& m1, const Matrix& m2)
+PMatrix operator+ (const PMatrix& m1, const PMatrix& m2)
 {
 	// Matrices that are to be added must have equal dimension;
 	if(m1.height != m2.height && m1.width != m2.width)
 	{
 		std::cout << "Error: + operator failed due matrices being of different dimension.\n";
-		return Matrix(0,0);
+		return PMatrix(0,0);
 	}
-	Matrix result =  Matrix(m1.height, m1.width);
+	PMatrix result =  PMatrix(m1.height, m1.width);
 
 	for(int i = 1; i <= m1.height; i++)
 	{
@@ -121,15 +122,15 @@ Matrix operator+ (const Matrix& m1, const Matrix& m2)
 	return result;
 }
 
-Matrix operator- (const Matrix& m1, const Matrix& m2)
+PMatrix operator- (const PMatrix& m1, const PMatrix& m2)
 {
 	// Matrices that are to be added must have equal dimension;
 	if(m1.height != m2.height && m1.width != m2.width)
 	{
 		std::cout << "Error: + operator failed due matrices being of different dimension.\n";
-		return Matrix(0,0);
+		return PMatrix(0,0);
 	}
-	Matrix result =  Matrix(m1.height, m1.width);
+	PMatrix result = PMatrix(m1.height, m1.width);
 
 	for(int i = 1; i <= m1.height; i++)
 	{
@@ -144,24 +145,24 @@ Matrix operator- (const Matrix& m1, const Matrix& m2)
 
 
 
-Matrix operator* (const Matrix& m1, const Matrix& m2)
+PMatrix operator* (const PMatrix& m1, const PMatrix& m2)
 {
 	// The first matrix must have a witdh equal to the height of the second matrix in order for valid multiplication.
 	if(m1.width != m2.height)
 	{
 		std::cout << "Error: * operator failed due to first matrix having a width not equal to the height of the second matrix.\n";
-		return Matrix(0,0);
+		return PMatrix(0,0);
 	}
-	Matrix result =  Matrix(m1.height, m2.width);
+	PMatrix result =  PMatrix(m1.height, m2.width);
 
 	for(int i = 1; i <= m1.height; i++)
 	{
 		for(int j = 1; j <= m2.width; j++)
 		{
-			double resultantEntry = 0;
+			Polynomial resultantEntry({0});
 			for(int k = 1; k <= m2.width; k++)
 			{
-				resultantEntry += m1.getEntry(i, k) * m2.getEntry(k, j);
+				resultantEntry = resultantEntry +  m1.getEntry(i, k) * m2.getEntry(k, j);
 			}
 			result.setEntry(i, j, resultantEntry);
 		}
@@ -172,22 +173,22 @@ Matrix operator* (const Matrix& m1, const Matrix& m2)
 }
 
 
-Matrix operator* (const double& s, const Matrix& m)
+PMatrix operator* (const Polynomial& p, const PMatrix& m)
 {
-	Matrix result =  Matrix(m.height, m.width);
+	PMatrix result =  PMatrix(m.height, m.width);
 
 	for(int i = 1; i <= m.height; i++)
 	{
 		for(int j = 1; j <= m.width; j++)
 		{
-			result.setEntry(i, j, s*m.getEntry(i,j));
+			result.setEntry(i, j, p*m.getEntry(i,j));
 		}
 	}
 
 	return result;
 }
 
-Matrix operator* (const Matrix& m, const double& s)
+PMatrix operator* (const PMatrix& m, const Polynomial& p)
 {
-	return s * m;
+	return p * m;
 }

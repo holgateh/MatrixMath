@@ -1,5 +1,5 @@
 all:
-	g++ *.cpp && ./a.out 
+	g++ -std=c++17 *.cpp && ./a.out 
 run: 
 	./a.out
 compile: 

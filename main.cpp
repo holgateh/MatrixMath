@@ -7,11 +7,14 @@
 #include <vector>
 int main()
 {
-	Polynomial q = Polynomial({1, 1});
-	Polynomial p = Polynomial({1, 1});
-	p.printPolynomial();
-	q.printPolynomial();
-	Polynomial r = p * q;
-	r.printPolynomial();
+	Matrix m = 3.0f * createIdentity(3);
+	m.setEntry(2,1, 12);
+	m.printMatrix();
+	std::vector<double> eValues = getEigenValues(m);
+	for(int i = 0; i < eValues.size(); i++)
+	{
+		std::cout << eValues.at(i) << " ";
+	}
+	std::cout << std::endl;
 	return 0;
 }
