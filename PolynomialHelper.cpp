@@ -33,7 +33,6 @@ double bisect(Polynomial p, double a, double b)
 			b = c;
 		}
 
-		std::cout << N << std::endl;
 	}
 
 	if(N == maxN)

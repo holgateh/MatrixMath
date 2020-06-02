@@ -38,10 +38,8 @@ std::vector<double> getEigenValues(const Matrix& m)
 	}
 	//Create Matrix M - X*I
 	PMatrix detMatrix = convertMatrix(m) - Polynomial({0, -1}) * PcreateIdentity(m.height);
-	detMatrix.printPMatrix();
 	//Calculate the determinant of the above matrix to get the characteristic polynomial.
 	Polynomial characteristic = detMatrix.det();
-	characteristic.printPolynomial();
 	//return the roots of this equation: the eigenvalues of m
 	return getRoots(characteristic); 
 	
