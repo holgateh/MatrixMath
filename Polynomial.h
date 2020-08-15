@@ -1,15 +1,17 @@
 #pragma once
 #include <vector>
+#include <math.h>
+#include <iostream>
 class Polynomial
 {
     private:
 		double order;
 		std::vector<double> coeff;
     public:
-		Polynomial(std::vector<double> coeff);
     private:
 
     public:
+		Polynomial(std::vector<double> _coeff);
 		double getOrder() const;
 		double getCoefficient(int exponent) const;
 		double evaluateAt(double x) const;
@@ -24,3 +26,5 @@ class Polynomial
 Polynomial operator+ (const Polynomial& p1, const Polynomial& p2);
 Polynomial operator- (const Polynomial& p1, const Polynomial& p2);
 Polynomial operator* (const Polynomial& p1, const Polynomial& p2);
+
+

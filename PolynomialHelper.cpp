@@ -13,7 +13,7 @@ double bisect(Polynomial p, double a, double b)
 	const int maxN = 10000;
 	const double tol = 0.0000000001f;
 	double c;
-	while(N <= maxN)
+	while (N <= maxN)
 	{	
 		c = (a + b) / 2.0f;	
 

@@ -1,49 +1,44 @@
 #include "Matrix.h"
-#include <iostream>
-#include <string.h>
-#include <math.h>
+
 //Set the width and height of the matrix and allocate memory to store the matrix's data.
-Matrix::Matrix(int _height, int _width) : height(_height), width(_width) 
+template <class T>
+Matrix<T>::Matrix(size_t _height, size_t _width) : height(_height), width(_width) 
 {
-	for(int i = 0; i < _height; i++)
-	{
-		for(int j = 0; j < _width; j++)
-		{
-			data.push_back(0);
-		}
-	}
+    data = std::vector<T>(height * width, (T)0); 
 }	
 
-void Matrix::setEntry(int i, int j, double value)
+template <class T>
+void Matrix<T>::setEntry(size_t i, size_t j, T value) 
 {
 	if(i < 1 || j < 1 || i > height || j > width)
 	{
 		std::cout << "Cannot set entry due to position being out of bounds.\n";
 		return;
 	}
-	this->data[(i-1)*this->width + (j-1)] = value;
+	data[(i-1)*width + (j-1)] = value;
+}
+template <class T>
+T Matrix<T>::getEntry(size_t i, size_t j) const
+{
+	return data[(i-1)*width + (j-1)];
 }
 
-double Matrix::getEntry(int i, int j) const
+template <class T>
+Matrix<T> Matrix<T>::getSubmatrix(size_t i, size_t j) const 
 {
-	return data[(i-1)*this->width + (j-1)];
-}
-
-Matrix Matrix::getSubmatrix(int i, int j)
-{
-	Matrix result =  Matrix(this->width - 1, this->height - 1);
+	auto result =  Matrix(width - 1, height - 1);
 	//Keeping track of the index that we are writing to in the resultant submatrix.	
-	int workingIndexX = 1;
-	int workingIndexY = 1;
-	for(int k = 1; k <= this->height; k++)
+	size_t workingIndexX = 1;
+	size_t workingIndexY = 1;
+	for(size_t k = 1; k <= height; k++)
 	{
 		if(k != i)
 		{
-			for(int l = 1; l <= this->width; l++)
+			for(size_t l = 1; l <= width; l++)
 			{
 				if(l != j)
 				{
-					result.setEntry(workingIndexY, workingIndexX, this->getEntry(k, l));
+					result.setEntry(workingIndexY, workingIndexX, getEntry(k, l));
 					workingIndexX++;
 				}
 			}
@@ -55,139 +50,77 @@ Matrix Matrix::getSubmatrix(int i, int j)
 	return result;
 }
 
-double Matrix::det()
+template <class T>
+T Matrix<T>::det() const
 {
 	//Return if the matrix is not square.
-	if(this->width != this->height)
+	if(width != height)
 	{
-		std::cout << "Determinants of non-square matrices cannot be calculated. -1 will be returned.\n";
-		return -1;
+        throw std::runtime_error("Cannot compute determinant of non square matrices.");
 	}
 	//Return the only entry if the matrix is 1x1.	
-	if(this->height == 1)
+	if(height == 1)
 	{
-		return this->getEntry(1,1);
+		return getEntry(1,1);
 	}
 
 	//Recursivly call the algorithm until the 2x2 case is reached.
-	if(this->height > 2)
+	if(height > 2)
 	{
-		double sum = 0;
-		for(int i = 1; i <= this->height; i++)
+		auto sum = 0;
+		for(size_t i = 1; i <= height; i++)
 		{
-			Matrix subMatrix = this->getSubmatrix(i,1);
-			sum += pow(-1, i+1) * this->getEntry(i, 1) * subMatrix.det();
+			auto subMatrix = getSubmatrix(i,1);
+			sum += pow(-1, i+1) * getEntry(i, 1) * subMatrix.det();
 		}
 		return sum;	
 	}
 	//Base case of the recursion: the 2x2 case.
 	else
 	{
-		return this->getEntry(1,1) * this->getEntry(2,2) - this->getEntry(2,1) * this->getEntry(1,2); 
+		return getEntry(1,1) * getEntry(2,2) - getEntry(2,1) * getEntry(1,2); 
 	}
 	
 }
 
-void Matrix::printMatrix()
+template <class T>
+void Matrix<T>::printMatrix() const
 {
-	for(int i = 0; i < this->height; i++)
+	for(size_t i = 0; i < height; i++)
 	{
-		for(int j = 0; j < this->width; j++)
+		for(size_t j = 0; j < width; j++)
 		{
-			std::cout << std::to_string(data[i*this->width + j]).substr(0, 4) << " ";	
+			std::cout << data[i*width + j] << " ";	
 		}
 		std::cout << std::endl;
 	}	
 }
 
-Matrix operator+ (const Matrix& m1, const Matrix& m2)
-{
-	// Matrices that are to be added must have equal dimension;
-	if(m1.height != m2.height && m1.width != m2.width)
-	{
-		std::cout << "Error: + operator failed due matrices being of different dimension.\n";
-		return Matrix(0,0);
-	}
-	Matrix result =  Matrix(m1.height, m1.width);
 
-	for(int i = 1; i <= m1.height; i++)
+template <class T>
+Matrix<T> Matrix<T>::createIdentity(size_t n)
+{
+	Matrix<T> m =  Matrix<T>(n, n);
+	for(size_t i = 1; i <= n; i++)
 	{
-		for(int j = 1; j <= m1.width; j++)
+		m.setEntry(i, i, (T)1);
+	}
+	return m;	
+}
+
+template <class T>
+Matrix<T> Matrix<T>::getTranspose() const
+{
+	Matrix<T> result =  Matrix<T>(width, height);
+
+	for(size_t i = 1; i <= result.height; i++)
+	{
+		for(size_t j = 1; j <= result.width; j++)
 		{
-			result.setEntry(i, j, m1.getEntry(i,j) + m2.getEntry(i,j));
+			result.setEntry(i, j, getEntry(j, i));
 		}
 	}
 
 	return result;
 }
 
-Matrix operator- (const Matrix& m1, const Matrix& m2)
-{
-	// Matrices that are to be added must have equal dimension;
-	if(m1.height != m2.height && m1.width != m2.width)
-	{
-		std::cout << "Error: + operator failed due matrices being of different dimension.\n";
-		return Matrix(0,0);
-	}
-	Matrix result =  Matrix(m1.height, m1.width);
-
-	for(int i = 1; i <= m1.height; i++)
-	{
-		for(int j = 1; j <= m1.width; j++)
-		{
-			result.setEntry(i, j, m1.getEntry(i,j) + m2.getEntry(i,j));
-		}
-	}
-
-	return result;
-}
-
-
-
-Matrix operator* (const Matrix& m1, const Matrix& m2)
-{
-	// The first matrix must have a witdh equal to the height of the second matrix in order for valid multiplication.
-	if(m1.width != m2.height)
-	{
-		std::cout << "Error: * operator failed due to first matrix having a width not equal to the height of the second matrix.\n";
-		return Matrix(0,0);
-	}
-	Matrix result =  Matrix(m1.height, m2.width);
-
-	for(int i = 1; i <= m1.height; i++)
-	{
-		for(int j = 1; j <= m2.width; j++)
-		{
-			double resultantEntry = 0;
-			for(int k = 1; k <= m2.width; k++)
-			{
-				resultantEntry += m1.getEntry(i, k) * m2.getEntry(k, j);
-			}
-			result.setEntry(i, j, resultantEntry);
-		}
-	}
-
-	return result;
-	
-}
-
-
-Matrix operator* (const double& s, const Matrix& m)
-{
-	Matrix result =  Matrix(m.height, m.width);
-
-	for(int i = 1; i <= m.height; i++)
-	{
-		for(int j = 1; j <= m.width; j++)
-		{
-			result.setEntry(i, j, s*m.getEntry(i,j));
-		}
-	}
-
-	return result;
-}
-
-Matrix operator* (const Matrix& m, const double& s)
-{
-	return s * m;
-}

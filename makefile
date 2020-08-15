@@ -1,6 +1,9 @@
-all:
-	g++ -std=c++17 *.cpp && ./a.out 
+cc=g++
+cflags=-std=c++17
+
+compile: 
+		$(cc) $(cflags) *.cpp
 run: 
 	./a.out
-compile: 
-	g++ *.cpp
+all:
+	compile run	

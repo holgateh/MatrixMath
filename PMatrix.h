@@ -6,16 +6,16 @@ class PMatrix
 	private:
 		std::vector<Polynomial> data;
 	public:
-		const int height, width;
+		const size_t height, width;
 	private:
 	
 	public:
-		PMatrix(int _height, int _width) ;
-		void setEntry(int i, int j, Polynomial value);
-		Polynomial getEntry(int i, int j) const;
-		PMatrix getSubmatrix(int i, int j);
-		Polynomial det();
-		void printPMatrix();
+		PMatrix(size_t _height, size_t _width) ;
+		void setEntry(size_t i, size_t j, Polynomial value);
+		Polynomial getEntry(size_t i, size_t j) const;
+		PMatrix getSubmatrix(size_t i, size_t j) ;
+		Polynomial det() ;
+		void printPMatrix() const;
 
 		// Operator overloads:
 		friend PMatrix operator+ (const PMatrix& m1, const PMatrix& m2);
