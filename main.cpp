@@ -9,15 +9,13 @@
 int main()
 {
     Matrix<double> m = 3.0 * Matrix<double>::createIdentity(3);
-    m.setEntry(2,1, 12);
     m.printMatrix();
-
-    std::vector<int> v = {3, 2, 1};
     std::vector<double> eValues = getEigenValues(m);
+    std::cout << "Eigen values: ";
     for(int i = 0; i < eValues.size(); i++)
     {
-    std::cout << eValues.at(i) << " ";
+        std::cout << eValues.at(i) << " ";
     }
-    std::cout << std::endl;
+    std::cout << "\n";
     return 0;
 }

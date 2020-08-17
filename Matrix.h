@@ -133,6 +133,7 @@ Matrix<U> operator* (const Matrix<U>& m, const U& s)
 }
 
 
+template class Matrix<Polynomial>;
 template class Matrix<double>;
 template class Matrix<float>;
 template class Matrix<int>;

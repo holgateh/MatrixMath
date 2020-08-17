@@ -67,7 +67,7 @@ T Matrix<T>::det() const
 	//Recursivly call the algorithm until the 2x2 case is reached.
 	if(height > 2)
 	{
-		auto sum = 0;
+		T sum = 0;
 		for(size_t i = 1; i <= height; i++)
 		{
 			auto subMatrix = getSubmatrix(i,1);
@@ -103,7 +103,7 @@ Matrix<T> Matrix<T>::createIdentity(size_t n)
 	Matrix<T> m =  Matrix<T>(n, n);
 	for(size_t i = 1; i <= n; i++)
 	{
-		m.setEntry(i, i, (T)1);
+		m.setEntry(i, i, T(1.0));
 	}
 	return m;	
 }

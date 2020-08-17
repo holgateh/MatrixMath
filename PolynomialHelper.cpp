@@ -97,7 +97,6 @@ std::vector<double> getRoots(Polynomial p)
 				}
 				roots.push_back(root);
 				tempPoly = reduce(tempPoly, root);
-				tempPoly.printPolynomial();
 			}
 			else
 			{
