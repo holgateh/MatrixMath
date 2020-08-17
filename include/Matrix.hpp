@@ -1,5 +1,5 @@
 #pragma once
-#include "Polynomial.h"
+#include "../include/Polynomial.hpp"
 #include <vector>
 #include <string>
 #include <iostream>

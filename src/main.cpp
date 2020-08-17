@@ -1,9 +1,9 @@
 #include <iostream>
-#include "stdlib.h"
-#include "Matrix.h"
-#include "MatrixHelper.h"
-#include "Polynomial.h"
-#include "PolynomialHelper.h"
+#include <stdlib.h>
+#include "../include/Matrix.hpp"
+#include "../include/MatrixHelper.hpp"
+#include "../include/Polynomial.hpp"
+#include "../include/PolynomialHelper.hpp"
 #include <vector>
 
 int main()

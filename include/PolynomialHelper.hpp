@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Polynomial.h"
+#include "../include/Polynomial.hpp"
 int sign(double x);
 double bisect(Polynomial p, double a, double b);
 Polynomial reduce(Polynomial p, double root);

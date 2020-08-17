@@ -1,5 +1,5 @@
-#include "MatrixHelper.h"
-#include "Polynomial.h"
+#include "../include/MatrixHelper.hpp"
+#include "../include/Polynomial.hpp"
 
 std::vector<double> getEigenValues(const Matrix<double>& m)
 {

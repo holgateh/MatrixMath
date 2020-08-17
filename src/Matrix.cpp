@@ -1,4 +1,4 @@
-#include "Matrix.h"
+#include "../include/Matrix.hpp"
 
 //Set the width and height of the matrix and allocate memory to store the matrix's data.
 template <class T>
