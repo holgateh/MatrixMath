@@ -8,14 +8,25 @@
 
 int main()
 {
-    Matrix<double> m = 3.0 * Matrix<double>::createIdentity(3);
+    Matrix<double> m = 3.0 * Matrix<double>(3, 3);
+    m.setEntry(1, 1, 1);
+    m.setEntry(2, 2, 3);
+    m.setEntry(2, 3, 4);
+    m.setEntry(3, 1, 11.0);
     m.printMatrix();
-    std::vector<double> eValues = getEigenValues(m);
+    std::vector<double> eigenValues = getEigenValues(m);
+    std::vector<Matrix<double>> eVectors = getEigenVectors(eigenValues, m);
     std::cout << "Eigen values: ";
-    for(int i = 0; i < eValues.size(); i++)
+    for (size_t i = 0; i < eigenValues.size(); i++)
     {
-        std::cout << eValues.at(i) << " ";
+        std::cout << "[" << i << "] = " << eigenValues.at(i) << " ";
     }
     std::cout << "\n";
+
+    for (auto v : eVectors)
+    {
+        v.printMatrix();
+        std::cout << "\n";
+    }
     return 0;
 }

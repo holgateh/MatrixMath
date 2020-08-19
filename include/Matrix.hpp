@@ -6,9 +6,6 @@
 #include <stdexcept>
 #include <string.h>
 #include <math.h>
-template <class T>
-class Matrix;
-
 
 template <class T>
 class Matrix
@@ -20,6 +17,7 @@ class Matrix
 	private:
 	public:
 		Matrix(size_t _height, size_t _width);
+        Matrix(const Matrix<T>& m);
 		void setEntry(size_t i, size_t j, T value);
 		T getEntry(size_t i, size_t j) const;
 		Matrix<T>getSubmatrix(size_t i, size_t j) const;
@@ -31,16 +29,22 @@ class Matrix
         static Matrix<T> createIdentity(size_t n);
 		// Operator overloads:
 
-        template<class U>
+        Matrix<T>& operator= (const Matrix<T>& m)
+        {
+            *this = Matrix<T>(m);
+            return *this;
+        }
+        template <class U>
         friend Matrix<U> operator+ (const Matrix<U>& m1, const Matrix<U>& m2);
-        template<class U>
+        template <class U>
         friend Matrix<U> operator- (const Matrix<U>& m1, const Matrix<U>& m2);
         template<class U>
         friend Matrix<U> operator* (const Matrix<U>& m1, const Matrix<U>& m2);
-        template<class U>
+        template <class U>
         friend Matrix<U> operator* (const  U& s, const Matrix<U>& m);
-        template<class U>
+        template <class U>
         friend Matrix<U> operator* (const Matrix<U>& m, const  U& s);
+
 };
 
 template <class U>
@@ -77,7 +81,7 @@ Matrix<U> operator- (const Matrix<U>& m1, const Matrix<U>& m2)
 	{
 		for(size_t j = 1; j <= m1.width; j++)
 		{
-			result.setEntry(i, j, m1.getEntry(i,j) + m2.getEntry(i,j));
+			result.setEntry(i, j, m1.getEntry(i,j) - m2.getEntry(i,j));
 		}
 	}
 

@@ -8,6 +8,19 @@ Matrix<T>::Matrix(size_t _height, size_t _width) : height(_height), width(_width
 }	
 
 template <class T>
+Matrix<T>::Matrix(const Matrix<T>& m) : Matrix(m.height, m.width)
+{
+
+    for (size_t i = 1; i <= height; i++)
+    {
+        for (size_t j = 1; j <= width; j++)
+        {
+            setEntry(i, j, m.getEntry(i, j));
+        }
+    }
+}
+
+template <class T>
 void Matrix<T>::setEntry(size_t i, size_t j, T value) 
 {
 	if(i < 1 || j < 1 || i > height || j > width)
