@@ -1,5 +1,5 @@
 #include "../include/MatrixHelper.hpp"
-#include "../include/Polynomial.hpp"
+
 
 size_t getLeadingEntryColumn(size_t i, const Matrix<double>& m)
 {
@@ -201,6 +201,8 @@ std::vector<Matrix<double>> getEigenVectors(const Matrix<double>& m)
 }
 std::vector<Matrix<double>> getEigenVectors(const std::vector<double>& eigenValues, const Matrix<double>& m)
 {
+    Timer("Acquire Eigen vectors.");
+    std::cout << "test";
     std::vector<Matrix<double>> result = std::vector<Matrix<double>>();
 
     for (size_t i = 0; i < eigenValues.size(); i++)
