@@ -1,5 +1,5 @@
 cc=g++
-cflags=-std=c++17
+cflags=-std=c++17 -pthread
 srcPATH=src/
 compile: 
 		$(cc) $(cflags) $(srcPATH)*.cpp

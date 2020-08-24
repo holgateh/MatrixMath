@@ -14,6 +14,21 @@ Polynomial::Polynomial(double _coeff)
     order = coeff.size() - 1;
 }
 
+Polynomial::Polynomial(const Polynomial& p)
+{
+    coeff = p.coeff;
+    order = coeff.size() - 1;
+
+}
+
+Polynomial::Polynomial(Polynomial&& p)
+{
+    coeff = std::move(p.coeff);
+    p.coeff = {};
+    order = coeff.size() - 1;
+
+}
+
 
 double Polynomial::getOrder() const
 {

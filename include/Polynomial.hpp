@@ -6,12 +6,14 @@ class Polynomial
 {
     private:
 		double order;
-		std::vector<double> coeff;
     public:
+		std::vector<double> coeff;
     private:
 
     public:
 		Polynomial(std::vector<double> _coeff);
+        Polynomial(const Polynomial& p);
+        Polynomial(Polynomial&& p);
         Polynomial(double _coeff);
 		double getOrder() const;
 		double getCoefficient(size_t exponent) const;
@@ -22,6 +24,23 @@ class Polynomial
 		friend Polynomial operator- (const Polynomial& p1, const Polynomial& p2);
 		friend Polynomial operator* (const Polynomial& p1, const Polynomial& p2);
         friend std::ostream& operator<< (std::ostream& os, const Polynomial& p);
+
+        Polynomial& operator= (const Polynomial& p)
+        {
+            coeff = p.coeff; 
+            order = coeff.size() - 1;// recalculate order.
+            return *this;
+        }
+
+        Polynomial& operator= (Polynomial&& p)
+        {
+            coeff = std::move(p.coeff);
+            order = coeff.size() - 1;// recalculate order.
+            p.coeff = {};
+            return *this;
+
+        }
+
         Polynomial& operator+= (const Polynomial& p)
         {
             *this = *this + p;
