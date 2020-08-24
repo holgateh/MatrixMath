@@ -10,8 +10,6 @@ Matrix<T>::Matrix(size_t _height, size_t _width) : height(_height), width(_width
 template <class T>
 Matrix<T>::Matrix(const Matrix<T>& m) : height(m.height), width(m.width)
 {
-    //Copy constructor
-    std::cout << "Copy constructor started.";
     data = m.data;
 }
 
