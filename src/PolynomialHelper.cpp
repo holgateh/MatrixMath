@@ -7,7 +7,7 @@ int sign(double x)
 	return x / abs(x);
 }
 
-double bisect(Polynomial p, double a, double b)
+double bisect(Polynomial& p, double a, double b)
 {
 	int N = 1;
 	const int maxN = 10000;
@@ -46,7 +46,7 @@ double bisect(Polynomial p, double a, double b)
 }
 
 
-Polynomial reduce(Polynomial p, double root)
+Polynomial reduce(Polynomial& p, double root)
 {
 	std::vector<double> newCoeff;
 	for(int i = p.getOrder() - 1; i >= 0; i--)
@@ -76,7 +76,7 @@ Polynomial makeMonic(Polynomial p)
 	return result;
 }
 
-std::vector<double> getRoots(Polynomial p)
+std::vector<double> getRoots(Polynomial& p)
 {
 	std::vector<double> roots;
 	Polynomial tempPoly = p;	
