@@ -1,7 +1,7 @@
 # MatrixMath
 A simple matrix mathematics template library.
 Functionality will include the following:
-  - Ability to create matrices of arbitrary size (limitation being the maximum value of size_t for a given system).
+  - Ability to create matrices of arbitrary size.
   - Abliity to create matrices of arbitrary type (type must satisfy certain coniditions like having a valid << overload, and basic arithmetic operations defined).
   - Ability to do arithmetic with matrix objects.
   - Ability to compute determinants of matrix objects (must be square).
