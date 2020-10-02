@@ -16,7 +16,7 @@ class Polynomial
         Polynomial(Polynomial&& p);
         Polynomial(double _coeff);
 		double getOrder() const;
-		double getCoefficient(size_t exponent) const;
+		double getCoefficient(uint32_t exponent) const;
 		double evaluateAt(double x) const;
 		double toFloat() const;
 		// Operator overloads:

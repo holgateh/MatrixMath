@@ -2,7 +2,7 @@
 
 //Set the width and height of the matrix and allocate memory to store the matrix's data.
 template <class T>
-Matrix<T>::Matrix(size_t _height, size_t _width) : height(_height), width(_width) 
+Matrix<T>::Matrix(uint32_t _height, uint32_t _width) : height(_height), width(_width) 
 {
     data = std::vector<T>(height * width, (T)0); 
 }	
@@ -21,7 +21,7 @@ Matrix<T>::Matrix(Matrix<T>&& m) : height(m.height), width(m.width)
 }
 
 template <class T>
-void Matrix<T>::setEntry(size_t i, size_t j, T value) 
+void Matrix<T>::setEntry(uint32_t i, uint32_t j, T value) 
 {
 	if(i < 1 || j < 1 || i > height || j > width)
 	{
@@ -31,23 +31,23 @@ void Matrix<T>::setEntry(size_t i, size_t j, T value)
 	data[(i-1)*width + (j-1)] = value;
 }
 template <class T>
-T Matrix<T>::getEntry(size_t i, size_t j) const
+T Matrix<T>::getEntry(uint32_t i, uint32_t j) const
 {
 	return data[(i-1)*width + (j-1)];
 }
 
 template <class T>
-Matrix<T> Matrix<T>::getSubmatrix(size_t i, size_t j) const 
+Matrix<T> Matrix<T>::getSubmatrix(uint32_t i, uint32_t j) const 
 {
 	auto result =  Matrix(width - 1, height - 1);
 	//Keeping track of the index that we are writing to in the resultant submatrix.	
-	size_t workingIndexX = 1;
-	size_t workingIndexY = 1;
-	for(size_t k = 1; k <= height; k++)
+	uint32_t workingIndexX = 1;
+	uint32_t workingIndexY = 1;
+	for(uint32_t k = 1; k <= height; k++)
 	{
 		if(k != i)
 		{
-			for(size_t l = 1; l <= width; l++)
+			for(uint32_t l = 1; l <= width; l++)
 			{
 				if(l != j)
 				{
@@ -81,7 +81,7 @@ T Matrix<T>::det() const
 	if(height > 2)
 	{
 		T sum = 0;
-		for(size_t i = 1; i <= height; i++)
+		for(uint32_t i = 1; i <= height; i++)
 		{
 			auto subMatrix = getSubmatrix(i,1);
 			sum += pow(-1, i+1) * getEntry(i, 1) * subMatrix.det();
@@ -99,9 +99,9 @@ T Matrix<T>::det() const
 template <class T>
 void Matrix<T>::printMatrix() const
 {
-	for(size_t i = 0; i < height; i++)
+	for(uint32_t i = 0; i < height; i++)
 	{
-		for(size_t j = 0; j < width; j++)
+		for(uint32_t j = 0; j < width; j++)
 		{
 			std::cout << data[i*width + j] << " ";	
 		}
@@ -111,10 +111,10 @@ void Matrix<T>::printMatrix() const
 
 
 template <class T>
-Matrix<T> Matrix<T>::createIdentity(size_t n)
+Matrix<T> Matrix<T>::createIdentity(uint32_t n)
 {
 	Matrix<T> m =  Matrix<T>(n, n);
-	for(size_t i = 1; i <= n; i++)
+	for(uint32_t i = 1; i <= n; i++)
 	{
 		m.setEntry(i, i, T(1.0));
 	}
@@ -126,9 +126,9 @@ Matrix<T> Matrix<T>::getTranspose() const
 {
 	Matrix<T> result =  Matrix<T>(width, height);
 
-	for(size_t i = 1; i <= result.height; i++)
+	for(uint32_t i = 1; i <= result.height; i++)
 	{
-		for(size_t j = 1; j <= result.width; j++)
+		for(uint32_t j = 1; j <= result.width; j++)
 		{
 			result.setEntry(i, j, getEntry(j, i));
 		}

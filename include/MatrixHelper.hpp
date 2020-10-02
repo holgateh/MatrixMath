@@ -10,12 +10,12 @@
 /*
  * Returns the leading entry of a given column, and returns -1 if the row is 0.
  */
-size_t getLeadingEntryColumn(size_t i, const Matrix<double>& m);
+uint32_t getLeadingEntryColumn(uint32_t i, const Matrix<double>& m);
 
 /*
  * Test if column i contains a leading entry of m.
  */
-bool isLeadingEntry(size_t i, const Matrix<double>& m);
+bool isLeadingEntry(uint32_t i, const Matrix<double>& m);
 
 /*
  * Return the kernel of matrix m, or, more precisely, the vectors that would form the spanning set 
@@ -34,17 +34,17 @@ Matrix<Polynomial> convertMatrix(const Matrix<double>& m);
  * Swap row i and j of matrix m.
  */
 template <class T>
-void swapRows(size_t i, size_t j, Matrix<T>& m);
+void swapRows(uint32_t i, uint32_t j, Matrix<T>& m);
 /*
  * Scalar addition of row j to row i.  
  */
 template <class T>
-void addRow(size_t i, size_t j, T scale, Matrix<T>& m);
+void addRow(uint32_t i, uint32_t j, T scale, Matrix<T>& m);
 /*
  * Scale row i by scale.
  */
 template <class T>
-void scaleRow(size_t i, float scale, Matrix<T>& m);
+void scaleRow(uint32_t i, float scale, Matrix<T>& m);
 /*
  * Get the Echelon form of m (no non zero entries below the diagonal).
  */

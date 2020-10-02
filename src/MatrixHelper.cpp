@@ -1,10 +1,10 @@
 #include "../include/MatrixHelper.hpp"
 
 
-size_t getLeadingEntryColumn(size_t i, const Matrix<double>& m)
+uint32_t getLeadingEntryColumn(uint32_t i, const Matrix<double>& m)
 {
-    size_t result = -1;
-    for (size_t j = m.width; j > 0; j--)
+    uint32_t result = -1;
+    for (uint32_t j = m.width; j > 0; j--)
     {
         if (m.getEntry(i,j) != 0)
         {
@@ -14,15 +14,15 @@ size_t getLeadingEntryColumn(size_t i, const Matrix<double>& m)
     return result;
 }
 
-bool isLeadingEntry(size_t i, const Matrix<double>& m)
+bool isLeadingEntry(uint32_t i, const Matrix<double>& m)
 {
     bool result = false;
-    for (size_t j = i; j > 0; j--) 
+    for (uint32_t j = i; j > 0; j--) 
     {
         if (abs(m.getEntry(j, i)) != 0)
         {
             result = true;
-            size_t k;
+            uint32_t k;
             for (k = i-1; k > 0; k--)
             {
                 if(m.getEntry(j, k) != 0)
@@ -44,13 +44,13 @@ std::vector<Matrix<double>> getKernel(const Matrix<double>& m)
     std::vector<Matrix<double>> result = std::vector<Matrix<double>>();
     auto rref = getReducedEchelonForm(m); 
 
-    for (size_t i = rref.width; i > 0; i--)
+    for (uint32_t i = rref.width; i > 0; i--)
     {
         if (!isLeadingEntry(i, rref))
         {
             Matrix<double> vector = Matrix<double>(rref.width, 1);
             vector.setEntry(i,1,1.0);
-            for (size_t j = rref.height; j > 0; j--)
+            for (uint32_t j = rref.height; j > 0; j--)
             {
                 if (rref.getEntry(j,i) != 0)
                 {
@@ -89,9 +89,9 @@ Matrix<Polynomial> convertMatrix(const Matrix<double>& m)
 
     auto result = Matrix<Polynomial>(m.height, m.width);
 
-	for(size_t i = 1; i <= m.height; i++)
+	for(uint32_t i = 1; i <= m.height; i++)
 	{
-		for(size_t j = 1; j <= m.width; j++)
+		for(uint32_t j = 1; j <= m.width; j++)
 		{
 		    result.setEntry(i, j, Polynomial({m.getEntry(i,j)}));
 		}
@@ -100,14 +100,14 @@ Matrix<Polynomial> convertMatrix(const Matrix<double>& m)
 }
 
 template <class T>
-void swapRows(size_t i, size_t j, Matrix<T>& m)
+void swapRows(uint32_t i, uint32_t j, Matrix<T>& m)
 {
     if (i == j)
     {
         return;
     }
 
-    for (size_t k = 1; k <= m.width; k++)
+    for (uint32_t k = 1; k <= m.width; k++)
     {
         T temp = m.getEntry(i, k);
         m.setEntry(i, k, m.getEntry(j, k));
@@ -116,18 +116,18 @@ void swapRows(size_t i, size_t j, Matrix<T>& m)
 }
 
 template <class T>
-void addRow(size_t i, size_t j, T scale, Matrix<T>& m)
+void addRow(uint32_t i, uint32_t j, T scale, Matrix<T>& m)
 {
-    for (size_t k = 1; k <= m.width; k++)
+    for (uint32_t k = 1; k <= m.width; k++)
     {
         m.setEntry(i,k, m.getEntry(i,k) + m.getEntry(j,k) * scale);
     }
 }
 
 template <class T>
-void scaleRow(size_t i, T scale, Matrix<T>& m)
+void scaleRow(uint32_t i, T scale, Matrix<T>& m)
 {
-    for (size_t j = 1; j <= m.width; j++)
+    for (uint32_t j = 1; j <= m.width; j++)
     {
         m.setEntry(i, j, m.getEntry(i,j) * scale);
     }
@@ -135,11 +135,11 @@ void scaleRow(size_t i, T scale, Matrix<T>& m)
 
 Matrix<double> getEchelonForm(Matrix<double> m)
 {
-    size_t i = 1 , j = 1;
+    uint32_t i = 1 , j = 1;
     while( i <= m.height)
     {   
-        size_t maxRow= i;    
-        for (size_t k = i+1; k <= m.height; k++)
+        uint32_t maxRow= i;    
+        for (uint32_t k = i+1; k <= m.height; k++)
         {
            if (abs(m.getEntry(k,j)) > abs(m.getEntry(maxRow, j)))
            {
@@ -156,7 +156,7 @@ Matrix<double> getEchelonForm(Matrix<double> m)
         {
             swapRows(maxRow, i, m);
 
-            for (size_t k = i+1; k <= m.height; k++)
+            for (uint32_t k = i+1; k <= m.height; k++)
             {
                 addRow(k, i, -(m.getEntry(k,j)/m.getEntry(i,j)), m); 
             } 
@@ -172,9 +172,9 @@ Matrix<double> getEchelonForm(Matrix<double> m)
 Matrix<double> getReducedEchelonForm(Matrix<double> m)
 {
     Matrix<double> q = getEchelonForm(m);
-    for (size_t i = m.height; i > 0; i--)
+    for (uint32_t i = m.height; i > 0; i--)
     {
-        size_t j = 1;  
+        uint32_t j = 1;  
         while (j <= m.width && q.getEntry(i,j) == 0)
         {
             j++;
@@ -185,7 +185,7 @@ Matrix<double> getReducedEchelonForm(Matrix<double> m)
         {
             //scale row
             scaleRow(i,1.0/q.getEntry(i,j), q);
-            for(size_t k = i-1; k >= 1; k--)
+            for(uint32_t k = i-1; k >= 1; k--)
             {
                 addRow(k, j, -(q.getEntry(k,j)/q.getEntry(i,j)), q);
             }
@@ -205,7 +205,7 @@ std::vector<Matrix<double>> getEigenVectors(const std::vector<double>& eigenValu
     std::cout << "test";
     std::vector<Matrix<double>> result = std::vector<Matrix<double>>();
 
-    for (size_t i = 0; i < eigenValues.size(); i++)
+    for (uint32_t i = 0; i < eigenValues.size(); i++)
     {
         std::vector<Matrix<double>> eigenVectors = getKernel(m - eigenValues[i]*Matrix<double>::createIdentity(m.height));
         result.insert(result.end(), eigenVectors.begin(), eigenVectors.end()); 

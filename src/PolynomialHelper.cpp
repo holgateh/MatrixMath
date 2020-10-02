@@ -21,7 +21,6 @@ double bisect(Polynomial& p, double a, double b)
 		{
 			break;
 		}
-		
 		N++;
 
 		if(sign(p.evaluateAt(c)) == sign(p.evaluateAt(a)))

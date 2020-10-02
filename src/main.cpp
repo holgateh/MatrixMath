@@ -19,7 +19,7 @@ int main()
     std::vector<double> eigenValues = getEigenValues(m);
     std::vector<Matrix<double>> eigenVectors = getEigenVectors(eigenValues, m);
     std::cout << "Eigen values: ";
-    for (size_t i = 0; i < eigenValues.size(); i++)
+    for (uint32_t i = 0; i < eigenValues.size(); i++)
     {
         std::cout << "[" << i << "] = " << eigenValues.at(i) << " ";
     }

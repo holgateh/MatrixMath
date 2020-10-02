@@ -17,21 +17,21 @@ class Matrix
     private:
 		std::vector<T> data;
 	public:
-		const size_t height, width;
+		const uint32_t height, width;
 	private:
 	public:
-		Matrix(size_t _height, size_t _width);
+		Matrix(uint32_t _height, uint32_t _width);
         Matrix(const Matrix<T>& m);
         Matrix(Matrix<T>&& m);
-		void setEntry(size_t i, size_t j, T value);
-		T getEntry(size_t i, size_t j) const;
-		Matrix<T>getSubmatrix(size_t i, size_t j) const;
+		void setEntry(uint32_t i, uint32_t j, T value);
+		T getEntry(uint32_t i, uint32_t j) const;
+		Matrix<T>getSubmatrix(uint32_t i, uint32_t j) const;
 		T det() const;
 		void printMatrix() const;
 
 
         Matrix<T> getTranspose() const;
-        static Matrix<T> createIdentity(size_t n);
+        static Matrix<T> createIdentity(uint32_t n);
 		// Operator overloads:
 
         Matrix<T>& operator= (Matrix<T>&& m)
@@ -70,19 +70,19 @@ Matrix<U> operator+ (const Matrix<U>& m1, const Matrix<U>& m2)
 	Matrix<U> result =  Matrix<U>(m1.height, m1.width);
 
 
-    const size_t nloop = result.height * result.width;
-    const size_t nthreads = std::thread::hardware_concurrency();
+    const uint32_t nloop = result.height * result.width;
+    const uint32_t nthreads = std::thread::hardware_concurrency();
     std::vector<std::thread> threads(nthreads);
     std::mutex critical;
 
-    auto add =  [&](const size_t bi, const size_t ei, const size_t t)
+    auto add =  [&](const uint32_t bi, const uint32_t ei, const uint32_t t)
             {
-                for(size_t i = bi; i < ei; i++)
+                for(uint32_t i = bi; i < ei; i++)
                 {   
                     result.data[i] = m1.data[i] + m2.data[i]; 
                 }
             };
-    for (size_t t = 0; t < nthreads; t++)
+    for (uint32_t t = 0; t < nthreads; t++)
     {
         threads[t] = std::thread(std::bind(
            add, t*nloop/nthreads, (t+1) == nthreads ? nloop:(t+1)*nloop/nthreads,t));
@@ -103,19 +103,19 @@ Matrix<U> operator- (const Matrix<U>& m1, const Matrix<U>& m2)
 	}
 	Matrix<U> result =  Matrix<U>(m1.height, m1.width);
 
-    const size_t nloop = result.height * result.width;
-    const size_t nthreads = std::thread::hardware_concurrency();
+    const uint32_t nloop = result.height * result.width;
+    const uint32_t nthreads = std::thread::hardware_concurrency();
     std::vector<std::thread> threads(nthreads);
     std::mutex critical;
 
-    auto sub =  [&](const size_t bi, const size_t ei, const size_t t)
+    auto sub =  [&](const uint32_t bi, const uint32_t ei, const uint32_t t)
             {
-                for(size_t i = bi; i < ei; i++)
+                for(uint32_t i = bi; i < ei; i++)
                 {   
                     result.data[i] = m1.data[i] - m2.data[i]; 
                 }
             };
-    for (size_t t = 0; t < nthreads; t++)
+    for (uint32_t t = 0; t < nthreads; t++)
     {
         threads[t] = std::thread(std::bind(
            sub, t*nloop/nthreads, (t+1) == nthreads ? nloop:(t+1)*nloop/nthreads,t));
@@ -137,23 +137,23 @@ Matrix<U> operator* (const Matrix<U>& m1, const Matrix<U>& m2)
 	}
 
     Matrix<U> result =  Matrix<U>(m1.height, m2.width);
-    const size_t nloop = result.height * result.width;
-    const size_t nthreads = std::thread::hardware_concurrency();
+    const uint32_t nloop = result.height * result.width;
+    const uint32_t nthreads = std::thread::hardware_concurrency();
     std::vector<std::thread> threads(nthreads);
     std::mutex critical;
 
-    auto multiply =  [&](const size_t bi, const size_t ei, const size_t t)
+    auto multiply =  [&](const uint32_t bi, const uint32_t ei, const uint32_t t)
             {
-                for(size_t i = bi; i < ei; i++)
+                for(uint32_t i = bi; i < ei; i++)
                 {   
-                    for(size_t k = 0; k < m2.width; k++)
+                    for(uint32_t k = 0; k < m2.width; k++)
                     {
                         result.data[i] += m1.data[(i - (i % m2.width)) / m2.width * m1.width + k] * m2.data[k * m2.height + i % m2.width]; 
                     }
 
                 }
             };
-    for (size_t t = 0; t < nthreads; t++)
+    for (uint32_t t = 0; t < nthreads; t++)
     {
         threads[t] = std::thread(std::bind(
            multiply, t*nloop/nthreads, (t+1) == nthreads ? nloop:(t+1)*nloop/nthreads,t));
@@ -168,19 +168,19 @@ template <class U>
 Matrix<U> operator* (const U& s, const Matrix<U>& m)
 {
     Matrix<U> result = Matrix<U>(m.height, m.width);
-    const size_t nloop = m.width * m.height;
-    const size_t nthreads = std::thread::hardware_concurrency();
+    const uint32_t nloop = m.width * m.height;
+    const uint32_t nthreads = std::thread::hardware_concurrency();
     std::vector<std::thread> threads(nthreads);
     std::mutex critical;
 
-    auto scale =  [&](const size_t bi, const size_t ei, const size_t t)
+    auto scale =  [&](const uint32_t bi, const uint32_t ei, const uint32_t t)
             {
-                for(size_t i = bi; i < ei; i++)
+                for(uint32_t i = bi; i < ei; i++)
                 {   
                     result.data[i] = s * m.data[i];
                 }
             };
-    for (size_t t = 0; t < nthreads; t++)
+    for (uint32_t t = 0; t < nthreads; t++)
     {
         threads[t] = std::thread(std::bind(
            scale, t*nloop/nthreads, (t+1) == nthreads ? nloop:(t+1)*nloop/nthreads,t));

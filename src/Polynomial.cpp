@@ -35,7 +35,7 @@ double Polynomial::getOrder() const
     return order;
 }
 
-double Polynomial::getCoefficient(size_t exponent) const
+double Polynomial::getCoefficient(uint32_t exponent) const
 {
     if(exponent < 0 || exponent > order)
     {
@@ -51,7 +51,7 @@ double Polynomial::getCoefficient(size_t exponent) const
 double Polynomial::evaluateAt(double x) const
 {
     double result = 0;
-    for(size_t i = 0; i <= order; i++)
+    for(uint32_t i = 0; i <= order; i++)
     {
         result += coeff.at(i) * pow(x, i);
     }
@@ -72,7 +72,7 @@ Polynomial operator+ (const Polynomial& p1, const Polynomial& p2)
     std::vector<double> newCoeff;
     if(p1.getOrder() >= p2.getOrder())
     {
-        for(size_t i = 0; i <= p1.getOrder(); i++)
+        for(uint32_t i = 0; i <= p1.getOrder(); i++)
         {
             if(i <= p2.getOrder())
             {
@@ -86,7 +86,7 @@ Polynomial operator+ (const Polynomial& p1, const Polynomial& p2)
     }
     else
     {
-        for(size_t i = 0; i <= p2.getOrder(); i++)
+        for(uint32_t i = 0; i <= p2.getOrder(); i++)
         {
             if(i <= p1.getOrder())
             {
@@ -104,10 +104,10 @@ Polynomial operator+ (const Polynomial& p1, const Polynomial& p2)
 Polynomial operator* (const Polynomial& p1, const Polynomial& p2)
 {
     std::vector<double> newCoeff;
-    for(size_t i = 0; i <= p1.getOrder() + p2.getOrder(); i++)
+    for(uint32_t i = 0; i <= p1.getOrder() + p2.getOrder(); i++)
     {
         double coeff = 0;
-        for(size_t j = 0; j <= i; j++)
+        for(uint32_t j = 0; j <= i; j++)
         {
             if(j <= p1.getOrder() && i - j <= p2.getOrder())
             {
@@ -127,7 +127,7 @@ Polynomial operator- (const Polynomial& p1, const Polynomial& p2)
 
 std::ostream& operator<< (std::ostream& os, const Polynomial& p)
 {
-    for (size_t i = 0; i <= p.getOrder(); i++)
+    for (uint32_t i = 0; i <= p.getOrder(); i++)
     {
         os << "(" << p.getCoefficient(i) << ")X^" <<  i;
         if(i != p.getOrder())
